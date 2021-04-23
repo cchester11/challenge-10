@@ -10,7 +10,7 @@
 
 //steps
 //1. make all classes in lib folder (check)
-//2. finish index.js
+//2. finish index.js(almost done)
 //3. work on template js
 //4. work on testing
 
@@ -18,8 +18,6 @@ const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
-
-const Inquirer = require('inquirer');
 const Jest = require('jest');
 const inquirer = require('inquirer');
 
@@ -27,11 +25,44 @@ const employees = [];
 
 //ask if they want to create a new employee or quit the application
 let userPrompt = () => {
-
+  inquirer.prompt ([
+    {
+      type: 'confirm',
+      name: 'nextEmployee',
+      message: 'Would you like to add an employee?',
+      default: false
+    }
+  ])
+  .then(({ nextEmployee }) => {
+    if({nextEmployee} === false) {
+      return stopApplication();
+    } else {
+      inquirer.prompt ([
+        {
+          type: 'checkbox',
+          name: 'pickNextEmployee',
+          message: 'What employee would you like to add next?',
+          choices: ['manager', 'intern', 'engineer'],
+        }
+      ])
+      .then(({pickNextEmployee}) => {
+        if(pickNextEmployee.choices === 'manager') {
+          return managerPrompt();
+        }
+        else if(pickNextEmployee.choices === 'intern') {
+          internPrompt();
+        }
+        else if(pickNextEmployee.choices === 'engineer') {
+          return engineerPrompt();
+        }
+      })
+    }
+  })
 }
 
 let managerPrompt = () => {
-  inquirer.prompt([{
+  inquirer.prompt([
+  {
     type: 'input',
     name: 'name',
     message: 'What is your name?',
@@ -52,13 +83,12 @@ let managerPrompt = () => {
     message: 'What is your office number?'
   }
 ])
-.then(function(data){
-  response.json(data)
-  //use the manager class to create a new manager with the data given
+.then(function({name, ID, email, officeNumber}) {
+  //use the manager class to create a new manager with the data given(check)
   //add the new employee to the array(check)
   //call userPrompt(check)
-  employees.push(data);
-  
+  employees.push(new Manager({name, ID, email, officeNumber}));
+  console.log(employees);
   userPrompt();
 })
 }
@@ -86,19 +116,17 @@ let engineerPrompt = () => {
       message: 'What is your github username?'
     }
   ])
-  .then(function(data){
-    //use the manager class to create a new manager with the data given
+  .then(function({name, ID, email, github}) {
+    //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(data);
-
+    employees.push(new Engineer({name, ID, email, github}));
     userPrompt();
-  })
-
-}
+  });
+};
 
 let internPrompt = () => {
-  inquirer.prompt9([
+  inquirer.prompt([
     {
       type: 'input',
       name: 'name',
@@ -120,19 +148,26 @@ let internPrompt = () => {
       message: 'What is the name of your school?'
     }
   ])
-  .then(function(data){
-    //use the manager class to create a new manager with the data given
+  .then(function({name, ID, email, school}) {
+    //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(data)
-
+    employees.push(new Intern({name, ID, email, school}));
+    console.log(employees)
     userPrompt();
+    console.log
   })
-
 }
 
 
 function stopApplication() {
   //write the file here
+  fs.writeFile('./dist/index.html', returnHTML, err => {
+    if(err) {
+      throw new Error(err)
+    }
+  })
 }
+
+userPrompt();
 
