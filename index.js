@@ -4,22 +4,24 @@
 //use inquirer to create a prompt for manager, intern, and engineer (check)
 //use .then to convert response into
 //push response after being used to make a new Employee to array (check)
-//create an fs.writeFile function 
-//put the html template in the writeFile function as the value ex: returnHTML (input)
+//create an fs.writeFile function (check)
+//put the html template in the writeFile function as the value ex: returnHTML (check)
 //use the prompt input of the respective employee as the parameter for the writeFile function
 
 //steps
 //1. make all classes in lib folder (check)
 //2. finish index.js(almost done)
 //3. work on template js
-//4. work on testing
+//4. work on testing (check)
 
 const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
+const template = require('./src/template')
 const Jest = require('jest');
 const inquirer = require('inquirer');
+const fs = require('fs');
 
 const employees = [];
 
@@ -34,8 +36,8 @@ let userPrompt = () => {
     }
   ])
   .then(({ nextEmployee }) => {
-    if({nextEmployee} === false) {
-      return stopApplication();
+    if(nextEmployee === false) {
+      stopApplication();
     } else {
       inquirer.prompt ([
         {
@@ -45,14 +47,14 @@ let userPrompt = () => {
           choices: ['manager', 'intern', 'engineer'],
         }
       ])
-      .then(({pickNextEmployee}) => {
-        if(pickNextEmployee.choices === 'manager') {
+      .then(({ pickNextEmployee }) => {
+        if(pickNextEmployee == 'manager') {
           return managerPrompt();
         }
-        else if(pickNextEmployee.choices === 'intern') {
+        else if(pickNextEmployee == 'intern') {
           internPrompt();
         }
-        else if(pickNextEmployee.choices === 'engineer') {
+        else if(pickNextEmployee == 'engineer') {
           return engineerPrompt();
         }
       })
@@ -83,11 +85,11 @@ let managerPrompt = () => {
     message: 'What is your office number?'
   }
 ])
-.then(function({name, ID, email, officeNumber}) {
+.then(function({name, id, email, officeNumber}) {
   //use the manager class to create a new manager with the data given(check)
   //add the new employee to the array(check)
   //call userPrompt(check)
-  employees.push(new Manager({name, ID, email, officeNumber}));
+  employees.push(new Manager({name, id, email, officeNumber}));
   console.log(employees);
   userPrompt();
 })
@@ -116,11 +118,12 @@ let engineerPrompt = () => {
       message: 'What is your github username?'
     }
   ])
-  .then(function({name, ID, email, github}) {
+  .then(function({name, id, email, github}) {
     //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(new Engineer({name, ID, email, github}));
+    employees.push(new Engineer({name, id, email, github}));
+    console.log(employees);
     userPrompt();
   });
 };
@@ -148,11 +151,11 @@ let internPrompt = () => {
       message: 'What is the name of your school?'
     }
   ])
-  .then(function({name, ID, email, school}) {
+  .then(function({name, id, email, school}) {
     //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(new Intern({name, ID, email, school}));
+    employees.push(new Intern({name, id, email, school}));
     console.log(employees)
     userPrompt();
     console.log
@@ -160,14 +163,18 @@ let internPrompt = () => {
 }
 
 
-function stopApplication() {
+function stopApplication(returnHTML) {
   //write the file here
-  fs.writeFile('./dist/index.html', returnHTML, err => {
+  const generatePage = template(returnHTML)
+  fs.writeFile('./dist/index.html', generatePage, 'UTF-8', err => {
     if(err) {
-      throw new Error(err)
+      return console.log(err)
     }
+    console.log('Page successfully created')
   })
 }
 
 userPrompt();
+
+module.exports = employees;
 
