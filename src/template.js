@@ -1,6 +1,5 @@
 //create an html as a string (template literal)
 //place prompt input in html 
-const index = require('../index')
 
 const returnHTML =  function(employees) {
   return `<!DOCTYPE html>
@@ -14,17 +13,18 @@ const returnHTML =  function(employees) {
   </head>
   <body>
   <div class="col">
-    <div class="card h-100">
+      ${employees.map(employee => (
+        `<div class="card h-100">
       <div class="card-body">
-        <h4 class="card-title">${employees.name}</h4>
-        <h5 class="card-text">Title: Manager</h5>
-      </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">ID: ${employees.id}</li>
-          <li class="list-group-item">Email: <a href="email:${employees.email}" class="card-link">${employees.email}</a></li>
-          <li class="list-group-item">Office Number: ${employees.officeId}</li>
-        </ul>
+      <h4 class="card-title">${employee.name}</h4>
+      <h5 class="card-text">Title: Manager</h5>
     </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">ID: ${employee.id}</li>
+        <li class="list-group-item">Email: <a href="email:${employee.email}" class="card-link">${employee.email}</a></li>
+        <li class="list-group-item">Office Number: ${employee.officeNumber || employee.github || employee.school}</li>
+      </ul>
+  </div>`))}
   </div>
   </body>
   </html>`

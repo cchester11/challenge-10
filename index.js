@@ -37,7 +37,7 @@ let userPrompt = () => {
   ])
   .then(({ nextEmployee }) => {
     if(nextEmployee === false) {
-      stopApplication();
+      stopApplication(employees);
     } else {
       inquirer.prompt ([
         {
@@ -71,7 +71,7 @@ let managerPrompt = () => {
   },
   {
     type: 'input',
-    name: 'ID',
+    name: 'id',
     message: 'What is your badge number?'
   },
   {
@@ -89,7 +89,7 @@ let managerPrompt = () => {
   //use the manager class to create a new manager with the data given(check)
   //add the new employee to the array(check)
   //call userPrompt(check)
-  employees.push(new Manager({name, id, email, officeNumber}));
+  employees.push(new Manager(name, id, email, officeNumber));
   console.log(employees);
   userPrompt();
 })
@@ -104,7 +104,7 @@ let engineerPrompt = () => {
     },
     {
       type: 'input',
-      name: 'ID',
+      name: 'id',
       message: 'What is your badge number?'
     },
     {
@@ -118,11 +118,11 @@ let engineerPrompt = () => {
       message: 'What is your github username?'
     }
   ])
-  .then(function({name, id, email, github}) {
+  .then(function({name,id, email, github}) {
     //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(new Engineer({name, id, email, github}));
+    employees.push(new Engineer(name, id, email, github));
     console.log(employees);
     userPrompt();
   });
@@ -137,7 +137,7 @@ let internPrompt = () => {
     },
     {
       type: 'input',
-      name: 'ID',
+      name: 'id',
       message: 'What is your badge number?'
     },
     {
@@ -155,7 +155,7 @@ let internPrompt = () => {
     //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
-    employees.push(new Intern({name, id, email, school}));
+    employees.push(new Intern(name, id, email, school));
     console.log(employees)
     userPrompt();
     console.log
