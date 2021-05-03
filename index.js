@@ -14,12 +14,10 @@
 //3. work on template js
 //4. work on testing (check)
 
-const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const template = require('./src/template')
-const Jest = require('jest');
 const inquirer = require('inquirer');
 const fs = require('fs');
 
@@ -52,7 +50,7 @@ let userPrompt = () => {
           return managerPrompt();
         }
         else if(pickNextEmployee == 'intern') {
-          internPrompt();
+          return internPrompt();
         }
         else if(pickNextEmployee == 'engineer') {
           return engineerPrompt();
@@ -118,7 +116,7 @@ let engineerPrompt = () => {
       message: 'What is your github username?'
     }
   ])
-  .then(function({name,id, email, github}) {
+  .then(function({name, id, email, github}) {
     //use the manager class to create a new manager with the data given(check)
     //add the new employee to the array(check)
     //call userPrompt(check)
@@ -158,7 +156,6 @@ let internPrompt = () => {
     employees.push(new Intern(name, id, email, school));
     console.log(employees)
     userPrompt();
-    console.log
   })
 }
 
