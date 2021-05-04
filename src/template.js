@@ -23,7 +23,7 @@ const returnHTML =  function(employees) {
       `<div class="card h-100">
       <div class="card-body">
       <h4 class="card-title">${employee.name}</h4>
-      <h5 class="card-text">Title: Manager</h5>
+      <h5 class="card-text">Title: ${employee.getRole()}</h5>
     </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">ID: ${employee.id}</li>
