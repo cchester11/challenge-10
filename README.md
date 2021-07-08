@@ -15,6 +15,12 @@ Use OOP to create a website with inqurer input. First I created manager, enginee
 
 ---
 
+## Walkthrough 
+
+start: run node index.js
+
+---
+
 ## Tools
 
 Node.js
